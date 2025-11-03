@@ -1,2 +1,1 @@
-# Inception-of-Things
-( IoT )
+# Inception-of-Things ( IoT )
