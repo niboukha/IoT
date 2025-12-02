@@ -6,4 +6,7 @@ curl -sfL https://get.k3s.io | \
 
 sudo cat /var/lib/rancher/k3s/server/node-token > /vagrant/k3s_token
 
+# to check kubectl => k
+echo "alias k='kubectl'" >> /home/vagrant/.bashrc 
+
 echo "K3s server installed."
