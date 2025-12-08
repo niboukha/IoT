@@ -1,0 +1,12 @@
+global:
+  hosts:
+    domain: example.com
+    externalIP: localhost:8080  # or leave blank if using DNS + ingress controller
+certmanager-issuer:
+  email: nisrinboukhari19@gmail.com
+# optionally disable built-in cert-manager if you already have one or don’t want TLS
+# certmanager:
+#   install: false
+# global:
+#   ingress:
+#     configureCertmanager: false
