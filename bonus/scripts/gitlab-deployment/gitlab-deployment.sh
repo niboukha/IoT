@@ -22,7 +22,7 @@ fi
 # Install GitLab using Helm in the gitlab namespace
 echo "=== Installing GitLab using Helm ==="
 sudo helm repo add gitlab https://charts.gitlab.io/
-sudo helm repo update 
+sudo helm repo update
 sudo helm upgrade --install gitlab gitlab/gitlab \
   -n gitlab \
   -f https://gitlab.com/gitlab-org/charts/gitlab/raw/master/examples/values-minikube-minimum.yaml \
@@ -37,11 +37,12 @@ echo "=== Waiting for GitLab pods to be ready ==="
 sudo kubectl wait --for=condition=ready --timeout=1200s pod -l app=webservice -n gitlab
 echo "=== GitLab pods are ready ==="
 
+helm upgrade --install gitlab gitlab/gitlab -f my-values.yaml -n gitlab
 # Get the initial root password for GitLab
-echo "=== Retrieving GitLab initial root password ==="
-GITLAB_ROOT_PASSWORD=$(kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode)
-echo "=== GitLab initial root password retrieved ==="
-echo "GitLab Root Password: $GITLAB_ROOT_PASSWORD"
+# echo "=== Retrieving GitLab initial root password ==="
+# GITLAB_ROOT_PASSWORD=$(kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode)
+# echo "=== GitLab initial root password retrieved ==="
+# echo "GitLab Root Password: $GITLAB_ROOT_PASSWORD"
 
 # Port-forward GitLab service to localhost:8081
 echo "=== Starting port-forward to svc/gitlab-webservice-default in namespace gitlab on localhost:8081... ==="
