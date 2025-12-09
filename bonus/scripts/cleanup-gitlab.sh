@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
 
 RELEASE="gitlab"
 NAMESPACE="${1:-default}"
@@ -45,6 +45,7 @@ read -r -p "Do you want to delete namespace \"$NAMESPACE\" as well? [y/N]: " yn
 if [[ "$yn" =~ ^[Yy]$ ]]; then
   kubectl delete namespace "$NAMESPACE" --ignore-not-found
 fi
+
 
 echo "✅ Cleanup script finished. Please double-check cluster for any leftover resources manually if needed."
 echo "👉 Example: kubectl get all,crds,clusterrole,clusterrolebinding,pvc,pv --all-namespaces"

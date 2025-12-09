@@ -2,13 +2,6 @@
 
 set -eu
 
-#install docker
-# echo "=== Installing Docker ==="
-# curl -fsSL https://get.docker.com -o get-docker.sh
-# sh get-docker.sh
-# sudo usermod -aG docker $USER
-# echo "=== Docker installed ==="
-
 # Install k3d (Kubernetes in Docker) CLI
 echo "=== Installing k3d ==="
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
@@ -23,6 +16,7 @@ echo "=== k3d cluster created ==="
 echo "=== Creating namespaces ==="
 kubectl create namespace argocd
 kubectl create namespace dev
+kubectl create namespace gitlab
 echo "=== K3d cluster and namespaces created ==="
 
 # Install ArgoCD into the argocd namespace
@@ -32,11 +26,11 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 echo "=== Wait until ArgoCD server deployment is ready ==="
 kubectl -n argocd rollout status deployment/argocd-server --timeout=120s
 
-# #install argocd
-# echo "=== Installing ArgoCD ==="
-# curl -sSL -o /tmp/argocd-install.yaml https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-# kubectl apply -f /tmp/argocd-install.yaml
-# echo "=== ArgoCD installed ==="
+#install argocd
+echo "=== Installing ArgoCD ==="
+curl -sSL -o /tmp/argocd-install.yaml https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -f /tmp/argocd-install.yaml
+echo "=== ArgoCD installed ==="
 
 # # Install ArgoCD CLI
 # echo "=== Installing ArgoCD CLI ==="
