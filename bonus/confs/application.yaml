@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://gitlab.com/nisrinboukhari19/shicham.git'
+    repoURL: 'http://gitlab-webservice-default.gitlab.svc:8181/root/shicham.git'
     targetRevision: HEAD
     path: .
   destination:

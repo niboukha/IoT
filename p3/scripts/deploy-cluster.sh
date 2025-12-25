@@ -27,6 +27,14 @@ install_k3d() {
   log_success "k3d installed"
 }
 
+install_kubectl() {
+  log_info "Installing kubectl (Kubernetes CLI)…"
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+  chmod +x kubectl
+  sudo mv kubectl /usr/local/bin/
+  log_success "kubectl installed"
+}
+
 create_cluster_and_namespaces() {
   log_info "Creating k3d cluster 'p3'…"
   k3d cluster create p3
@@ -43,7 +51,9 @@ install_argocd() {
   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
   log_info "Waiting for ArgoCD server to be ready…"
-  kubectl -n argocd rollout status deployment/argocd-server --timeout=120s
+  # kubectl -n argocd rollout status deployment/argocd-server --timeout=120s
+  kubectl wait deployment/argocd-server -n argocd --for=condition=Available --timeout=300s
+
   log_success "ArgoCD installed"
 }
 
@@ -79,9 +89,9 @@ wait_and_portforward_app() {
     sleep 3
   done
 
-  log_info "Waiting for at least one pod with label app=wil-playground to be ready…"
-  kubectl wait pod -n dev -l app=wil-playground --for condition=Ready --timeout=60s
-  log_success "Service and pod are ready"
+  # log_info "Waiting for at least one pod with label app=wil-playground to be ready…"
+  # kubectl wait pod -n dev -l app=wil-playground --for condition=Ready --timeout=60s
+  # log_success "Service and pod are ready"
 
   log_info "Starting port-forward to svc/wil-playground → localhost:8888…"
   while true; do
@@ -95,11 +105,12 @@ wait_and_portforward_app() {
 main() {
   # install_docker
   install_k3d
+  # install_kubectl
   create_cluster_and_namespaces
   install_argocd
   configure_argocd_and_deploy_app
   wait_and_portforward_app
 }
 
-main "$@"
+main
 
