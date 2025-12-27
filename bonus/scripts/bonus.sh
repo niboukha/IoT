@@ -26,23 +26,18 @@ install_git() {
 install_docker() {
   log_info "Installing Docker…"
   curl -fsSL https://get.docker.com -o get-docker.sh
-  sudo sh get-docker.sh
-  rm -f get-docker.sh
-
-  # Add the vagrant user to the docker group so vagrant can run Docker commands
-  sudo usermod -aG docker vagrant
-
+  sh get-docker.sh
+  sudo usermod -aG docker "$USER"
+  newgrp docker << EOF
+echo "Group membership refreshed"
+EOF
   log_success "Docker installed"
 }
+
 
 main() {
   install_git
   install_docker
-#   cd /vagrant/scripts
-#   ./deploy_cluster
-#   ./deploy_gitlab
-#   echo "alias k='kubectl'" >> /home/vagrant/.bashrc 
-  log_success "installation completed"
 }
 
 main

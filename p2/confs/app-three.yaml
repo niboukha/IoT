@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: app-three
-        image: niboukha/hello-kubernetes:arm64-v2
+        image: paulbouwer/hello-kubernetes:1.10
         ports:
         - containerPort: 8080
         env:

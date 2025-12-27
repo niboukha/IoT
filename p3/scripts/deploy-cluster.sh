@@ -18,6 +18,9 @@ install_docker() {
   curl -fsSL https://get.docker.com -o get-docker.sh
   sh get-docker.sh
   sudo usermod -aG docker "$USER"
+  newgrp docker << EOF
+echo "Group membership refreshed"
+EOF
   log_success "Docker installed"
 }
 
@@ -29,9 +32,14 @@ install_k3d() {
 
 install_kubectl() {
   log_info "Installing kubectl (Kubernetes CLI)…"
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+  # curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+  # chmod +x kubectl
+  # sudo mv kubectl /usr/local/bin/
+
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   chmod +x kubectl
   sudo mv kubectl /usr/local/bin/
+
   log_success "kubectl installed"
 }
 
@@ -56,6 +64,16 @@ install_argocd() {
 
   log_success "ArgoCD installed"
 }
+
+install_argocd_client() {
+  log_info "Installing ArgoCD CLI…"
+  # curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-arm64
+  curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+  chmod +x argocd
+  sudo mv argocd /usr/local/bin/
+  log_success "ArgoCD CLI installed"
+}
+
 
 configure_argocd_and_deploy_app() {
   log_info "Logging into ArgoCD server…"
@@ -103,11 +121,12 @@ wait_and_portforward_app() {
 }
 
 main() {
-  # install_docker
+  install_docker
   install_k3d
-  # install_kubectl
+  install_kubectl
   create_cluster_and_namespaces
   install_argocd
+  install_argocd_client
   configure_argocd_and_deploy_app
   wait_and_portforward_app
 }

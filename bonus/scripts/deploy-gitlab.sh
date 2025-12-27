@@ -20,6 +20,8 @@ else
     echo "adding $HOSTS_FILE"
     echo "$HOST_ENTRY" | sudo tee -a "$HOSTS_FILE"
 fi
+
+
  
 # Install GitLab using Helm in the gitlab namespace
 echo "=== Installing GitLab using Helm ==="

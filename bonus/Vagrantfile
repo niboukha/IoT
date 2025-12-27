@@ -12,8 +12,8 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--name", "bonus"]
     end
 
-    config.vm.provision "shell", path: "./scripts/bonus.sh"
     config.vm.provision "shell", path: "./scripts/deploy-cluster.sh"
+    config.vm.provision "shell", path: "./scripts/deploy-gitlab.sh"
 
 
 end
