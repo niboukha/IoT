@@ -17,7 +17,7 @@ fi
 # docker rmi -f $(docker images -aq)
 # docker volume rm $(docker volume ls -q)
 # docker network rm $(docker network ls -q)
-# echo "All Docker containers, images, volumes, and networks removed."
+# echo "All Docker containers, images, volumes, and networks removed.
 
 # Ask user whether to uninstall k3d CLI (remove binary)
 read -p "Do you want to uninstall k3d CLI binary from system? (y/N) " UNINSTALL_CLI

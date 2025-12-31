@@ -17,10 +17,11 @@ install_docker() {
   log_info "Installing Docker…"
   curl -fsSL https://get.docker.com -o get-docker.sh
   sh get-docker.sh
-  sudo usermod -aG docker "$USER"
-  newgrp docker << EOF
-echo "Group membership refreshed"
-EOF
+  sudo chmod 666 /var/run/docker.sock
+  # sudo usermod -aG docker "$USER"
+#   newgrp docker << EOF
+# echo "Group membership refreshed"
+# EOF
   log_success "Docker installed"
 }
 

@@ -1,4 +1,38 @@
 global:
-    initialRootPassword:
+  initialRootPassword:
     secret: argo123!
     key: password
+  psql:
+    postgresqlMemory: "512Mi"
+    postgresqlCpu: "100m"
+  redis:
+    memory: "512Mi"
+    cpu: "100m"
+
+gitlab:
+  webservice:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "512Mi"
+      limits:
+        cpu: "200m"
+        memory: "1Gi"
+
+  sidekiq:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "512Mi"
+      limits:
+        cpu: "200m"
+        memory: "1Gi"
+
+  nginx-ingress:
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+      limits:
+        cpu: "100m"
+        memory: "512Mi"
