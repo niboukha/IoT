@@ -18,7 +18,7 @@ install_docker() {
   log_info "Installing Docker…"
   curl -fsSL https://get.docker.com -o get-docker.sh
   sh get-docker.sh
-  sudo usermod -aG docker "$USER"
+  # sudo usermod -aG docker "$USER"
   sudo chmod 666 /var/run/docker.sock
 #   su - "$USER" << EOF
 #   newgrp docker << EOF
@@ -113,7 +113,7 @@ deploy_gitlab() {
   helm upgrade --install gitlab gitlab/gitlab \
     -n gitlab \
     -f https://gitlab.com/gitlab-org/charts/gitlab/raw/master/examples/values-minikube-minimum.yaml \
-    -f /vagrant/gitlab-values.yaml \
+    -f $HOME/Desktop/Inception-of-Things-IoT-/bonus/confs/gitlab-values.yaml \
     --set global.hosts.domain=k3d.gitlab.com \
     --set global.hosts.externalIP=0.0.0.0 \
     --set global.hosts.https=false \
@@ -122,11 +122,11 @@ deploy_gitlab() {
   log_success "GitLab chart installed"
 
   # Configure kubectl to use the new cluster
-  log_info "Configuring kubectl to use the new cluster…"
-  mkdir -p /home/vagrant/.kube
-  sudo cp -i /root/.kube/config /home/vagrant/.kube/config
-  sudo chown vagrant:vagrant /home/vagrant/.kube/config
-  log_success "kubectl configured"
+  # log_info "Configuring kubectl to use the new cluster…"
+  # mkdir -p /home/vagrant/.kube
+  # sudo cp -i /root/.kube/config /home/vagrant/.kube/config
+  # sudo chown vagrant:vagrant /home/vagrant/.kube/config
+  # log_success "kubectl configured"
 
   # log_info "Waiting for GitLab webservice to be ready…"
   # kubectl rollout status deployment gitlab-webservice-default -n gitlab --timeout=300s
@@ -173,14 +173,14 @@ EOF
   log_success "Git configured"
 
   # Initialize and push to GitLab (modify path & repo info as needed)
-  # log_info "Initializing local Git repo and pushing to GitLab…"
-  # cd "$HOME/Desktop/shichamGitlab" || log_error "Repo directory not found"
-  # git init
-  # git add .
-  # git commit -m "first commit"
-  # git push --set-upstream "http://gitlab.k3d.gitlab.com:8083/root/shicham.git" master
+  log_info "Initializing local Git repo and pushing to GitLab…"
+  cd "$HOME/Desktop/shichamGitlab" || log_error "Repo directory not found"
+  git init
+  git add .
+  git commit -m "first commit"
+  git push --set-upstream "http://gitlab.k3d.gitlab.com:8083/root/shicham.git" master
 
-  #clone from github
+  # clone from github
 
   GITHUB_USERNAME="niboukha"
   GITHUB_TOKEN="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"
@@ -188,16 +188,16 @@ EOF
   # Directory where you want to clone
   CLONE_DIR="/vagrant/shicham"
 
-  echo "Cloning GitHub repo via HTTPS with token..."
-  git clone "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/shicham.git" "${CLONE_DIR}"
+  # echo "Cloning GitHub repo via HTTPS with token..."
+  # git clone "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/shicham.git" "${CLONE_DIR}"
 
-  cd shicham || log_error "Cloned repo directory not found"
-  git remote rename origin upstream
-  git remote add origin "http://gitlab.k3d.gitlab.com:8083/root/shicham.git"
-  git push --set-upstream origin --all
-  git push origin --tags
+  # cd shicham || log_error "Cloned repo directory not found"
+  # git remote rename origin upstream
+  # git remote add origin "http://gitlab.k3d.gitlab.com:8083/root/shicham.git"
+  # git push --set-upstream origin --all
+  # git push origin --tags
 
-  log_success "Repo initialized and pushed"
+  # log_success "Repo initialized and pushed"
 
   # Generate GitLab PAT for API use
   log_info "Generating GitLab Personal Access Token…"
@@ -247,11 +247,11 @@ configure_argocd_and_deploy_app() {
   log_success "ArgoCD admin password changed"
 
   log_info "Applying updated argocd-cm ConfigMap…"
-  kubectl apply -f /vagrant/confs/argocd-cm.yaml -n argocd
+  kubectl apply -f $HOME/Desktop/Inception-of-Things-IoT-/bonus/confs/argocd-cm.yaml -n argocd
   log_success "Updated argocd-cm applied"
 
   log_info "Applying ArgoCD Application manifest…"
-  kubectl apply -f /vagrant/confs/application.yaml -n argocd
+  kubectl apply -f $HOME/Desktop/Inception-of-Things-IoT-/bonus/confs/application.yaml -n argocd
   log_success "ArgoCD Application manifest applied"
 }
 
