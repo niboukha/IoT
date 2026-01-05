@@ -1,5 +1,55 @@
+global:
+  hosts:
+    domain: gitlab.k3d.gitlab.com
+    externalIP: "0.0.0.0"
+  ingress:
+    configureCertmanager: false
+  minio:
+    enabled: false
+  appConfig:
+    artifacts:
+      enabled: false
+    uploads:
+      enabled: false
+    lfs:
+      enabled: false
+    packages:
+      enabled: false
+    externalDiffs:
+      enabled: false
+    backups:
+      bucket: ""
+      tmpBucket: ""
+
+gitlab-runner:
+  install: false
+
+prometheus:
+  install: false
+
+nginx-ingress:
+  enabled: false
+
 gitlab:
-  migrations:
-    initialRootPassword:
-      secret: argo123!
-      key: password
+  registry:
+    enabled: false
+  gitlabPages:
+    enabled: false
+  toolbox:
+    enabled: false
+    backups:
+      cron:
+        enabled: false
+  webservice:
+    replicaCount: 1
+  sidekiq:
+    replicaCount: 1
+
+postgresql:
+  persistence:
+    enabled: false
+
+redis:
+  master:
+    persistence:
+      enabled: false
