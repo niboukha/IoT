@@ -1,34 +1,38 @@
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "bento/ubuntu-22.04"
+  config.vm.box = "ubuntu/jammy64"
 
+  # gives passwordless SSH between VMs
+  config.ssh.insert_key = false
 
-  config.vm.define "niboukhaS" do |control| # control is like a local configuration object specific to that VM
-    control.vm.hostname = "niboukhaS"
-    control.vm.network "private_network", ip: "192.168.56.110"
+  # Shared folder so server and worker can exchange token
+  config.vm.synced_folder ".", "/vagrant"
 
-    control.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+  # --- Master VM ---
+  config.vm.define "gkaribS" do |server|
+    server.vm.hostname = "gkaribS"
+    server.vm.network "private_network", ip: "192.168.56.110"
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 1024 # 512
       vb.cpus = 1
-      vb.customize ["modifyvm", :id, "--name", "niboukhaS"]
+      vb.name = "gkaribS"
     end
-
-    control.vm.provision "shell", path: "./scripts/server.sh"
-  
+    server.vm.provision "shell", path: "./scripts/MasterSetup.sh"
   end
 
-  config.vm.define "niboukhaWS" do |control|
-    control.vm.hostname = "niboukhaWS"
-    control.vm.network "private_network", ip: "192.168.56.111"
+  # --- Worker Server VM ---
+  config.vm.define "gkaribSW" do |worker|
+    worker.vm.box = "ubuntu/jammy64"
+    worker.vm.hostname = "gkaribSW"
+    worker.vm.network "private_network", ip: "192.168.56.111"
 
-    control.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+    worker.vm.provider "virtualbox" do |vb|
+    vb.memory = 1024 # 512
       vb.cpus = 1
-      vb.customize ["modifyvm", :id, "--name", "niboukhaWS"]
+      vb.name = "gkaribSW"
     end
-
-    control.vm.provision "shell", path: "./scripts/workerServer.sh"
-  
+    worker.vm.provision "shell", path: "./scripts/WorkerSetup.sh"
   end
 
 end
