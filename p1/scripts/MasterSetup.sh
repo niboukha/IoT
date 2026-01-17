@@ -6,6 +6,7 @@ sudo apt update -y
 sudo apt install -y curl ca-certificates
 
 echo "=== Installing K3s Master ==="
+# Disable Traefik & metrics-server to reduce RAM usage
 curl -sfL https://get.k3s.io | \
 INSTALL_K3S_EXEC="server \
   --node-ip 192.168.56.110 \
