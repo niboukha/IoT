@@ -1,36 +1,37 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: multihostingress
-  namespace: default
+  name: apps-ingress
 spec:
   rules:
   - host: app1.com
     http:
       paths:
-      - path: "/"
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: app-one
+            name: app1
             port:
-              number: 80
+              number: 8080
+
   - host: app2.com
     http:
       paths:
-      - path: "/"
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: app-two
+            name: app2
             port:
-              number: 80
+              number: 8080
+
   - http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /
+        pathType: Prefix
         backend:
           service:
-            name: app-three
+            name: app3
             port:
-              number: 80
+              number: 8080
