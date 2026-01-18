@@ -153,6 +153,10 @@ EOF
   git config --global user.email "nisrinboukhari19@gmail.com"
   git config --global user.name "niboukha"
 
+
+  SCRIPT_DIR=$(pwd)
+  log_info "PRINTING SCRIPT_DIR----------------: $SCRIPT_DIR"
+
   log_info "Initializing local Git repo and pushing to GitLab…"
   cd "$HOME/Desktop/shichamGitlab" || log_error "Repo directory not found"
   git init
@@ -205,6 +209,11 @@ configure_argocd_and_deploy_app() {
     --new-password "incept123!"
   log_success "ArgoCD admin password changed"
 
+  cd "$SCRIPT_DIR" || log_error "Could not change directory to $SCRIPT_DIR"
+  log_info "PRINTING CURRENT DIR----------------: $(pwd)"
+  log_info "PRINTING ARGOCD CONFIG----------------:"
+  cat "./confs/argocd-cm.yaml"
+
   log_info "Applying updated argocd-cm ConfigMap…"
   kubectl apply -f ./confs/argocd-cm.yaml -n argocd
   log_success "Updated argocd-cm applied"
@@ -230,7 +239,7 @@ wait_and_portforward_app() {
   done
 }
 
-main() { 
+main() {
   install_docker
   install_git
   install_k3d
