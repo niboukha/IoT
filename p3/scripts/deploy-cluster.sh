@@ -18,10 +18,6 @@ install_docker() {
   curl -fsSL https://get.docker.com -o get-docker.sh
   sh get-docker.sh
   sudo chmod 666 /var/run/docker.sock
-  # sudo usermod -aG docker "$USER"
-#   newgrp docker << EOF
-# echo "Group membership refreshed"
-# EOF
   log_success "Docker installed"
 }
 
@@ -93,11 +89,11 @@ configure_argocd_and_deploy_app() {
   log_success "ArgoCD admin password changed"
 
   log_info "Applying updated argocd-cm ConfigMap…"
-  kubectl apply -f ../confs/argocd-cm.yaml -n argocd
+  kubectl apply -f ./confs/argocd-cm.yaml -n argocd
   log_success "Updated argocd-cm applied"
 
   log_info "Applying ArgoCD Application manifest…"
-  kubectl apply -f ../confs/application.yaml -n argocd
+  kubectl apply -f ./confs/application.yaml -n argocd
   log_success "ArgoCD Application manifest applied"
 }
 

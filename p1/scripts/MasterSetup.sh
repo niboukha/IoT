@@ -26,4 +26,6 @@ kubectl get nodes
 echo "=== Copy node token to shared folder ==="
 sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/node-token
 
+echo "alias k='kubectl'" >> /home/vagrant/.bashrc
+
 echo "Master setup completed!"

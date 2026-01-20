@@ -13,6 +13,7 @@ sleep 10
 
 kubectl apply -f /vagrant/confs
 
+echo "alias k='kubectl'" >> /home/vagrant/.bashrc
 
 
 

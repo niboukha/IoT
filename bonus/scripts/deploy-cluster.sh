@@ -211,8 +211,6 @@ configure_argocd_and_deploy_app() {
 
   cd "$SCRIPT_DIR" || log_error "Could not change directory to $SCRIPT_DIR"
   log_info "PRINTING CURRENT DIR----------------: $(pwd)"
-  log_info "PRINTING ARGOCD CONFIG----------------:"
-  cat "./confs/argocd-cm.yaml"
 
   log_info "Applying updated argocd-cm ConfigMap…"
   kubectl apply -f ./confs/argocd-cm.yaml -n argocd
